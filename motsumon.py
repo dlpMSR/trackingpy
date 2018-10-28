@@ -5,6 +5,7 @@ aruco = cv2.aruco
 dir(aruco)
 dictionary = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
 
+
 def generateMarker():
     marker = aruco.drawMarker(dictionary, 0, 64)
     #cv2.imshow('0.64', marker)
@@ -30,7 +31,7 @@ def calibrate_image(input_image):
     return calibrated_image
 
 
-def main():
+def detectMarker():
     cap = cv2.VideoCapture(0)
     while(cap.isOpened()):
         ret, frame = cap.read()
@@ -39,11 +40,17 @@ def main():
         #print(corners)
         for i, corner in enumerate(corners):
             points = corner[0].astype(np.int32)
-            cv2.polylines(frame, [points], True, (0,0,255))
+            cv2.polylines(frame, [points], True, (0,255,0))
+            
+            center = [int(0.5*(points[0][0]+points[2][0])), int(0.5*(points[0][1]+points[2][1]))]
+
             cv2.putText(frame, str(ids[i][0]),
                         tuple(points[0]),
                         cv2.FONT_HERSHEY_PLAIN,
                         1,(0,0,0), 1)
+            cv2.circle(frame, tuple(center), 5, (0, 0, 255), -1)
+            cv2.line(frame, tuple(center), tuple(points[0]), (0, 0, 255), 5)
+
         cv2.imshow('Frame', frame)
 
 
@@ -52,6 +59,11 @@ def main():
         
     cap.release()
     cv2.destroyAllWindows()
+
+
+def main():
+    #generateMarker()
+    detectMarker()
 
 
 if __name__ == '__main__':

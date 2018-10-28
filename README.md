@@ -1,4 +1,4 @@
 # trackingpy
 
-arucoを使うためにOpenCV Contribをインストールする
+arucoを使うためにOpenCV Contribをインストールする  
 `pip install opencv-contrib-python`

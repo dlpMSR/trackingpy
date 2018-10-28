@@ -1,9 +1,12 @@
 import cv2
 import numpy as np
+import math
 
 aruco = cv2.aruco
 dir(aruco)
 dictionary = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
+
+MARKER_LENGTH = 83
 
 
 def generateMarker():
@@ -41,9 +44,11 @@ def detectMarker():
         for i, corner in enumerate(corners):
             points = corner[0].astype(np.int32)
             cv2.polylines(frame, [points], True, (0,255,0))
-            
-            center = [int(0.5*(points[0][0]+points[2][0])), int(0.5*(points[0][1]+points[2][1]))]
 
+            mk_length = distance(points[0][0], points[0][1], points[1][0], points[1][1])
+            lengthperpix = MARKER_LENGTH / mk_length
+            print(lengthperpix)
+            center = [int(0.5*(points[0][0]+points[2][0])), int(0.5*(points[0][1]+points[2][1]))]
             cv2.putText(frame, str(ids[i][0]),
                         tuple(points[0]),
                         cv2.FONT_HERSHEY_PLAIN,
@@ -58,6 +63,13 @@ def detectMarker():
         
     cap.release()
     cv2.destroyAllWindows()
+
+
+def distance(x1, y1, x2, y2):
+        xd = x2 - x1
+        yd = y2 - y1 
+        distance = math.sqrt(pow(xd, 2)+pow(yd, 2))
+        return distance
 
 
 def main():

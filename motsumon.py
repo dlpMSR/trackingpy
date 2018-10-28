@@ -20,8 +20,8 @@ def prepareExperiment():
 
 
 def calibrate_image(input_image):
-    CAMERA_MATRIX = np.array([[1279.334, 0, 331.0683], 
-                              [0, 1276.837, 202.1932], 
+    CAMERA_MATRIX = np.array([[3800, 0, 940], 
+                              [0, 6000, 540], 
                               [0, 0, 1]])
     DISTORTION_COEFFICIENTS = np.array([0.735355, -18.7537, 0.008532, -0.01289, 33.69365])
     #undistort
@@ -52,7 +52,6 @@ def detectMarker():
             cv2.line(frame, tuple(center), tuple(points[0]), (0, 0, 255), 5)
 
         cv2.imshow('Frame', frame)
-
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
